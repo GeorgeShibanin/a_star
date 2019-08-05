@@ -2,6 +2,20 @@
 #include <queue>
 #include <vector>
 
+struct Node
+{
+    std::tuple<int, int> xy;
+    double  f, g, h;
+    double weights;
+
+    bool operator== (const Node &other) const {
+        int a, b, c, d;
+        std::tie(a, b) = this->xy;
+        std::tie(c, d) = other.xy;
+        return a == c && b == d;
+    }
+};
+
 namespace std {
     template <> struct hash<std::tuple<int, int>> {
         typedef std::tuple<int, int> argument_type;
