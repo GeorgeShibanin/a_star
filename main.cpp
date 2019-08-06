@@ -3,7 +3,7 @@
 #include "structures.cpp"
 
 /*Heuristic func*/
-double h(std::tuple<int, int> x, std::tuple<int, int> y) {
+double h(Location x, Location y) {
     int a, b, c, d;
     std::tie(a, b) = x;
     std::tie(c, d) = y;
@@ -11,7 +11,7 @@ double h(std::tuple<int, int> x, std::tuple<int, int> y) {
 }
 
 template <typename T>
-std::vector<T> show_me_path(T start, T goal, std::unordered_map<T, T>& came_from) {
+void show_me_path(T start, T goal, std::unordered_map<T, T>& came_from) {
     std::vector<T> path;
     T current = goal;
     path.push_back(current);
@@ -20,12 +20,12 @@ std::vector<T> show_me_path(T start, T goal, std::unordered_map<T, T>& came_from
         path.push_back(current);
     }
     std::reverse(path.begin(), path.end());
+    std::cout << "WAY:" << "\n";
     for (auto i : path) {
         int x, y;
         std::tie(x, y) = i;
         std::cout << x << " " << y << "\n";
     }
-    return path;
 }
 
 /*Search algorithm*/
@@ -42,15 +42,14 @@ void a_star(Graph graph,
         auto current = open.get();
         int x, y;
         std::tie(x,y) = current;
-        std::cout <<"\n" <<  "Visiting - " << x << " " << y << ":";
+        std::cout <<"\n" <<  "Visiting - " << x << " " << y;
         if (current == goal) {
-            std::cout << "\n" << "u reach your goal" << "\n";
+            std::cout << "\n" << "FINISH" << "\n";
             show_me_path(start, goal, parent);
             break;
         }
         for (auto next :  graph.neighbors(current)) {
             double  new_cost = g[current] + graph.cost(current, next);
-            std::cout << graph.cost(current, next) << " ";
             if (g.find(next) == g.end() || new_cost < g[next]) {
                 g[next] = new_cost;
                 double f = g[next] + h(next, goal);
@@ -69,17 +68,16 @@ int main() {
     Grid example_graph(4, 4);
 
     /*initialize walls*/
-    std::unordered_set<std::tuple<int, int>> walls{{1,0}, {0, 1},
+    std::unordered_set<Location> walls{{1,0}, {0, 1},
                                                    {2, 1}, {1, 2},
-                                                   {2, 3}, {3, 2}};
-
+                                                   {3, 2}};
     example_graph.walls = walls;
 
     /*initialize cell with weights*/
-    example_graph.weightsCords = {{{0,0},3}, {{1,1},5}, {{3, 3}, 7}};
+    example_graph.weightsCords = {{{0,0},3}, {{1,1}, 9}, {{2, 2}, 100}, {{3, 3}, 5}};
 
 
-    std::tuple<int ,int> start, goal;
+    Location start, goal;
     start = {0, 0};
     goal = {3, 3};
 

@@ -2,25 +2,13 @@
 #include <queue>
 #include <vector>
 
-struct Node
-{
-    std::tuple<int, int> xy;
-    double  f, g, h;
-    double weights;
-
-    bool operator== (const Node &other) const {
-        int a, b, c, d;
-        std::tie(a, b) = this->xy;
-        std::tie(c, d) = other.xy;
-        return a == c && b == d;
-    }
-};
+typedef std::tuple<int, int> Location;
 
 namespace std {
-    template <> struct hash<std::tuple<int, int>> {
-        typedef std::tuple<int, int> argument_type;
+    template <> struct hash<Location> {
+        typedef Location argument_type;
         typedef std::size_t result_type;
-        std::size_t operator()(const std::tuple<int ,int>& id) const noexcept {
+        std::size_t operator()(const Location& id) const noexcept {
             int x, y;
             std::tie(x, y) = id;
             return std::hash<int>()(x ^ (y << 4));

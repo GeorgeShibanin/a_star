@@ -6,9 +6,9 @@
 #include "config.cpp"
 
 
+
 struct Grid {
 
-    typedef std::tuple<int, int> Location;
     int width, height;
     std::unordered_set<Location> walls;
     std::unordered_map<Location, double> weightsCords;
@@ -65,14 +65,14 @@ struct Grid {
         std::vector<Location> xy;
         int x, y;
         std::tie(x, y) = id;
-        xy.emplace_back(std::tuple<int, int>(x + 1, y));
-        xy.emplace_back(std::tuple<int, int>(x + 1, y - 1));
-        xy.emplace_back(std::tuple<int, int>(x, y - 1));
-        xy.emplace_back(std::tuple<int, int>(x - 1, y - 1));
-        xy.emplace_back(std::tuple<int, int>(x - 1, y));
-        xy.emplace_back(std::tuple<int, int>(x - 1, y + 1));
-        xy.emplace_back(std::tuple<int, int>(x, y + 1));
-        xy.emplace_back(std::tuple<int, int>(x + 1, y + 1));
+        xy.emplace_back(Location(x + 1, y));
+        xy.emplace_back(Location(x + 1, y - 1));
+        xy.emplace_back(Location(x, y - 1));
+        xy.emplace_back(Location(x - 1, y - 1));
+        xy.emplace_back(Location(x - 1, y));
+        xy.emplace_back(Location(x - 1, y + 1));
+        xy.emplace_back(Location(x, y + 1));
+        xy.emplace_back(Location(x + 1, y + 1));
         for (auto i : xy) {
             if (in_bounds(i) && passable(i)) {
                 results.push_back(i);
